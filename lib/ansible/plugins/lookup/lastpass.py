@@ -25,7 +25,29 @@ DOCUMENTATION = """
 """
 
 EXAMPLES = """
-# need one
+# Assuming you have already logged in to LastPass and have an entry like this :
+$ lpass show example
+example [id: 77570047053]
+Username: example_user
+Password: notsecret
+URL: https://example.com
+Notes: note
+
+# Then you can query it like this :
+$ ansible localhost -m debug -a "msg={{lookup ('lastpass' , 'example' ) }}"
+localhost | SUCCESS => {
+    "changed": false,
+    "msg": "notsecret"
+}
+
+# Or, if you want specific fields :
+$ ansible localhost -m debug -a "msg={{lookup ('lastpass' , '77570047053', field='notes' ) }}"
+localhost | SUCCESS => {
+    "changed": false,
+    "msg": "note"
+}
+
+# NB you cannot search for a site by it's URL.
 """
 
 RETURN = """
